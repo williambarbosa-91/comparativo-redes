@@ -1,0 +1,2808 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Switches</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            color: #333;
+            padding-bottom: 80px;
+        }
+
+        body.comparison-active {
+            padding-bottom: 100px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 1200px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+            border-bottom: 3px solid #4a1a6b;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background-color: #e8f4fd;
+        }
+
+        .modelo {
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .sim {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .nao {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-gerenciavel {
+            background-color: #e7f3ff;
+            color: #0066cc;
+        }
+
+        .badge-poe {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+
+        .badge-nao-gerenciavel {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: #1e3c72;
+            font-size: 18px;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        /* Filter Styles */
+        .filters {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: #495057;
+            margin-right: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #6c757d;
+            background-color: #fff;
+            color: #495057;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: #e9ecef;
+            border-color: #495057;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .filter-btn.poe-active {
+            border-color: #e65100;
+            color: #e65100;
+        }
+
+        .filter-btn.poe-active:hover {
+            background-color: #fff3e0;
+        }
+
+        .filter-btn.poe-active.active {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            border-color: #ff9800;
+        }
+
+        .filter-btn.no-poe-active {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+
+        .filter-btn.no-poe-active:hover {
+            background-color: #fce4ec;
+        }
+
+        .filter-btn.no-poe-active.active {
+            background: linear-gradient(135deg, #ef5350 0%, #c62828 100%);
+            color: white;
+            border-color: #ef5350;
+        }
+
+        .filter-btn.managed-active {
+            border-color: #0066cc;
+            color: #0066cc;
+        }
+
+        .filter-btn.managed-active:hover {
+            background-color: #e7f3ff;
+        }
+
+        .filter-btn.managed-active.active {
+            background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+            color: white;
+            border-color: #42a5f5;
+        }
+
+        .filter-btn.unmanaged-active {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .filter-btn.unmanaged-active:hover {
+            background-color: #f8f9fa;
+        }
+
+        .filter-btn.unmanaged-active.active {
+            background: linear-gradient(135deg, #78909c 0%, #546e7a 100%);
+            color: white;
+            border-color: #78909c;
+        }
+
+        .filter-btn.sfp-active {
+            border-color: #7b1fa2;
+            color: #7b1fa2;
+        }
+
+        .filter-btn.sfp-active:hover {
+            background-color: #f3e5f5;
+        }
+
+        .filter-btn.sfp-active.active {
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+            color: white;
+            border-color: #9c27b0;
+        }
+
+        .filter-btn.no-sfp-active {
+            border-color: #78909c;
+            color: #78909c;
+        }
+
+        .filter-btn.no-sfp-active:hover {
+            background-color: #eceff1;
+        }
+
+        .filter-btn.no-sfp-active.active {
+            background: linear-gradient(135deg, #90a4ae 0%, #78909c 100%);
+            color: white;
+            border-color: #90a4ae;
+        }
+
+        .filter-select {
+            padding: 8px 16px;
+            border: 2px solid #6c757d;
+            background-color: #fff;
+            color: #495057;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+        }
+
+        .filter-select:hover {
+            border-color: #495057;
+        }
+
+        .filter-select:focus {
+            border-color: #667eea;
+        }
+
+        .clear-filters {
+            padding: 8px 20px;
+            border: 2px solid #28a745;
+            background-color: #fff;
+            color: #28a745;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .clear-filters:hover {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: 2px solid #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-box svg {
+            width: 18px;
+            height: 18px;
+            color: #6c757d;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+            width: 200px;
+            color: #495057;
+        }
+
+        .search-input::placeholder {
+            color: #adb5bd;
+        }
+
+        .result-count {
+            text-align: center;
+            padding: 10px;
+            background-color: #e7f3ff;
+            color: #0066cc;
+            font-weight: 600;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Comparison Styles */
+        .comparison-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px 20px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .comparison-bar.active {
+            display: flex;
+        }
+
+        .comparison-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .comparison-info span {
+            font-weight: 600;
+        }
+
+        .comparison-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .compare-btn {
+            padding: 10px 25px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .compare-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .clear-compare-btn {
+            padding: 10px 20px;
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .clear-compare-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Checkbox Styles */
+        .compare-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        th.checkbox-col {
+            width: 50px;
+            text-align: center;
+        }
+
+        td.checkbox-col {
+            text-align: center;
+        }
+
+        .row-selected {
+            background-color: #e8f4fd !important;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Comparison Modal */
+        .comparison-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .comparison-modal.active {
+            display: flex;
+        }
+
+        .comparison-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 1200px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+        }
+
+        .comparison-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comparison-header h2 {
+            font-size: 24px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .comparison-body {
+            padding: 30px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .comparison-table tr:first-child td {
+            font-weight: 700;
+            color: #1e3c72;
+            background: #f8f9fa;
+        }
+
+        .comparison-label {
+            font-weight: 600;
+            color: #495057;
+            background: #f8f9fa;
+            width: 200px;
+        }
+
+        .highlight-better {
+            background: #d4edda;
+            color: #155724;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .no-data {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+
+            .stats {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Catálogo de Switches de Rede</h1>
+            <p>CRIADO POR: WILLIAM (SUPORTE TECNICO)</p>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters">
+            <div class="filter-group">
+                <span class="filter-label">Filtros:</span>
+
+                <!-- Search Box -->
+                <div class="search-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" class="search-input" id="search-input" placeholder="Buscar modelo..." oninput="searchTable()">
+                </div>
+
+                <!-- PoE Filters -->
+                <button class="filter-btn poe-active" onclick="toggleFilter('poe')" id="btn-poe">Com POE</button>
+                <button class="filter-btn no-poe-active" onclick="toggleFilter('no-poe')" id="btn-no-poe">Sem POE</button>
+
+                <!-- Management Filters -->
+                <button class="filter-btn managed-active" onclick="toggleFilter('managed')" id="btn-managed">Gerenciável</button>
+                <button class="filter-btn unmanaged-active" onclick="toggleFilter('unmanaged')" id="btn-unmanaged">Não Gerenciável</button>
+
+                <!-- Port Count Filter -->
+                <select class="filter-select" id="port-filter" onchange="filterByPorts()">
+                    <option value="">Todas as Portas</option>
+                    <option value="5">5 Portas</option>
+                    <option value="8">8 Portas</option>
+                    <option value="9">9 Portas</option>
+                    <option value="10">10 Portas</option>
+                    <option value="16">16 Portas</option>
+                    <option value="18">18 Portas</option>
+                    <option value="24">24 Portas</option>
+                    <option value="26">26 Portas</option>
+                    <option value="48">48 Portas</option>
+                </select>
+
+                <!-- SFP Filter -->
+                <button class="filter-btn sfp-active" onclick="toggleFilter('sfp')" id="btn-sfp">Com SFP</button>
+                <button class="filter-btn no-sfp-active" onclick="toggleFilter('no-sfp')" id="btn-no-sfp">Sem SFP</button>
+
+                <!-- Clear Filters -->
+                <button class="clear-filters" onclick="clearAllFilters()">Limpar Filtros</button>
+            </div>
+        </div>
+
+        <div class="result-count" id="result-count">
+            Mostrando 113 modelos
+        </div>
+
+        <!-- Comparison Bar -->
+        <div class="comparison-bar" id="comparison-bar">
+            <div class="comparison-info">
+                <span>Comparar:</span>
+                <span id="selected-models">0/2 selecionados</span>
+            </div>
+            <div class="comparison-actions">
+                <button class="compare-btn" onclick="showComparison()">Comparar</button>
+                <button class="clear-compare-btn" onclick="clearSelection()">Limpar</button>
+            </div>
+        </div>
+
+        <!-- Comparison Modal -->
+        <div class="comparison-modal" id="comparison-modal">
+            <div class="comparison-content">
+                <div class="comparison-header">
+                    <h2>Comparar Switches</h2>
+                    <button class="close-modal" onclick="closeComparisonModal()">&times;</button>
+                </div>
+                <div class="comparison-body" id="comparison-body">
+                    <!-- Comparison table will be generated here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="checkbox-col">
+                            <input type="checkbox" id="select-all" class="compare-checkbox" onchange="toggleSelectAll()">
+                        </th>
+                        <th>Modelo</th>
+                        <th>Interface</th>
+                        <th>Qtde Portas</th>
+                        <th>Gerenciável</th>
+                        <th>PoE Ativo</th>
+                        <th>Taxa Enc. Pacotes</th>
+                        <th>Backplane</th>
+                        <th>Possui SFP</th>
+                        <th>PoE Extender</th>
+                        <th>PoE Por Porta</th>
+                        <th>PoE Total</th>
+                        <th>QoS</th>
+                        <th>Garantia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="modelo">S1005G</td>
+                        <td>Giga</td>
+                        <td>5 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>1,488 Mpps</td>
+                        <td>10 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1005G-P</td>
+                        <td>Giga</td>
+                        <td>5 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>1,488 Mpps</td>
+                        <td>10 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>58 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1010F-P</td>
+                        <td>Fast</td>
+                        <td>10 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>1,488 Mpps</td>
+                        <td>1,6 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>58 W</td>
+                        <td class="nao">Não</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1010G-PA</td>
+                        <td>Giga</td>
+                        <td>9 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>1,49 Mpps</td>
+                        <td>20 Gbps</td>
+                        <td>1 Independente</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>92 W</td>
+                        <td class="nao">Não</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1018G-PA</td>
+                        <td>Giga</td>
+                        <td>16 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>1,488 Mpps</td>
+                        <td>36 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>230 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1105F-P</td>
+                        <td>Fast</td>
+                        <td>5 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>744 Kpps</td>
+                        <td>1 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>55 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1105G</td>
+                        <td>Giga</td>
+                        <td>5 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>7,44 Mpps</td>
+                        <td>10 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1105G-P</td>
+                        <td>Giga</td>
+                        <td>5 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>8,928 Mpps</td>
+                        <td>10 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>56 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1108F</td>
+                        <td>Fast</td>
+                        <td>8 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>1,1904 Mpps</td>
+                        <td>1,6 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1110F-P</td>
+                        <td>Fast</td>
+                        <td>10 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>1,49 Mpps</td>
+                        <td>2 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>53,25 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1110G-PA</td>
+                        <td>Giga</td>
+                        <td>9 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>15 Mpps</td>
+                        <td>20 Gbps</td>
+                        <td>1 Independente</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>84,47 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1116F</td>
+                        <td>Fast</td>
+                        <td>16 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>2,38 Mpps</td>
+                        <td>3,2 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1116G</td>
+                        <td>Giga</td>
+                        <td>16 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>23 Mpps</td>
+                        <td>32 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1118F-PA</td>
+                        <td>Giga | Fast</td>
+                        <td>18 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>5,36 Mpps</td>
+                        <td>7,2 Gbps</td>
+                        <td>2 Combo</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>125 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1120G-PA</td>
+                        <td>Giga</td>
+                        <td>18 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>29,76 Mpps</td>
+                        <td>40 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>221 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1124G</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>35 Mpps</td>
+                        <td>48 Gbps</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1126F-HPA</td>
+                        <td>Giga | Fast</td>
+                        <td>24 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>6,55 Mpps</td>
+                        <td>8,8 Gbps</td>
+                        <td>2 Combo</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>228 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1126F-PA</td>
+                        <td>Giga | Fast</td>
+                        <td>24 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>6,55 Mpps</td>
+                        <td>8,8 Gbps</td>
+                        <td>2 Combo</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>182,52 W</td>
+                        <td class="nao">Não</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1128G-PA</td>
+                        <td>Giga</td>
+                        <td>26 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>41,66 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>250 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2310G-A</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>15 Mpps</td>
+                        <td>20 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2328G-A</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>42 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2328G-B</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>95,232 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2328G-PA</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>42 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Independentes (SFP)</td>
+                        <td class="nao">Não</td>
+                        <td>15W:24 | 30W:12</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2328G-PB</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>95,232 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>15W:24 | 30W:12</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2352G-A</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>78 Mpps</td>
+                        <td>104 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2352G-B</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>130 Mpps</td>
+                        <td>176 Gbps</td>
+                        <td>4 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2352G-PB</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>130,952 Mpps</td>
+                        <td>176 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>15W:24 | 30W:12</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3028G-B</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>95,2 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3028G-B LITE</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>95,2 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3028G-PB LITE</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>95,2 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3028G-PB MAX</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>95,2 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>380 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3054G-B</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>160 Mpps</td>
+                        <td>216 Gbps</td>
+                        <td>6 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3328G-A</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>41,7 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Portas SFP</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3328G-B</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>95,232 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Portas SFP/SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3328G-PA</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>41,7 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Portas</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>240 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3328G-PA 370W</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>41,7 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Combo</td>
+                        <td class="nao">Não</td>
+                        <td>15W:24 | 30W:12</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3328G-PB</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>95,232 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>240 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3328G-PB 370W</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>95,232 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Combo</td>
+                        <td class="nao">Não</td>
+                        <td>15W:24 | 30W:12</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S3352G-PB</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>130 Gpps</td>
+                        <td>176 Gbps</td>
+                        <td>4 Independentes (SFP/SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>15W:24 | 30W:12</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3130-24GP-2M10-2X PROJETO</td>
+                        <td>Giga</td>
+                        <td>24 Portas + 2 Portas M10</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>96 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>2 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3130-48GP-2M10-2X PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 Portas + 2 Portas M10</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>131 Mpps</td>
+                        <td>176 Gbps</td>
+                        <td>2 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3130-8M2U-2X PROJETO</td>
+                        <td>Giga</td>
+                        <td>8 Portas M2</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>60 Mpps</td>
+                        <td>80 Gbps</td>
+                        <td>2 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>60 W</td>
+                        <td>370 W AC - 740 W DC</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3170-24G-4X PROJETO</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>96 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3170-24GP-4X PROJETO</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>96 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3170-48G-6X PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>161 Mpps</td>
+                        <td>216 Gbps</td>
+                        <td>6 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3170-48GP-6X PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>161 Mpps</td>
+                        <td>216 Gbps</td>
+                        <td>6 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3570-24G-4X PROJETO</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>96 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3570-24GP-4X PROJETO</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>96 Mpps</td>
+                        <td>128 Gbps</td>
+                        <td>4 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>35 W</td>
+                        <td>530 - 840 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3570-24S-8G-4X PROJETO</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>108 Mpps</td>
+                        <td>144 Gbps</td>
+                        <td>24 SFP - 4 SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3570-48G-6X PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>161 Mpps</td>
+                        <td>216 Gbps</td>
+                        <td>6 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3570-48GP-6X PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>161 Mpps</td>
+                        <td>216 Gbps</td>
+                        <td>6 Independentes (SFP+)</td>
+                        <td class="nao">Não</td>
+                        <td>35 W</td>
+                        <td>530 - 1680 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3570-48S-6X PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 SFP</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>161 Mpps</td>
+                        <td>216 Gbps</td>
+                        <td>48 SFP - 6 SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3590-16GU-8M10U-4YE PROJETO</td>
+                        <td>Giga</td>
+                        <td>16 Portas - 8 M10</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>462 Mpps</td>
+                        <td>792 Gbps</td>
+                        <td>4 SFP28</td>
+                        <td class="nao">Não</td>
+                        <td>30 - 90 W</td>
+                        <td>450 - 2850 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3590-28G-4SC-8XE PROJETO</td>
+                        <td>Giga</td>
+                        <td>28 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>462 Mpps</td>
+                        <td>616 Gbps</td>
+                        <td>4 Combo + 8 SFP/SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3590-28GP-4SC-8XE PROJETO</td>
+                        <td>Giga</td>
+                        <td>28 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>462 Mpps</td>
+                        <td>616 Gbps</td>
+                        <td>4 Combo - 8 SFP/SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>450 - 840 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3590-28S-4SC-8XE PROJETO</td>
+                        <td>Giga</td>
+                        <td>28 SFP</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>462 Mpps</td>
+                        <td>616 Gbps</td>
+                        <td>28 SFP - 4 Combo - 8 SFP/SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3590-32GU-16M10U-4YE PROJETO</td>
+                        <td>Giga</td>
+                        <td>32 Portas - 16 M10</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>462 Mpps</td>
+                        <td>984 Gbps</td>
+                        <td>4 SFP28</td>
+                        <td class="nao">Não</td>
+                        <td>30 - 90 W</td>
+                        <td>450 - 2850 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3590-48G-4XE PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>432 Mpps</td>
+                        <td>576 Gbps</td>
+                        <td>4 SFP/SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3590-48GP-6XE PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>462 Mpps</td>
+                        <td>616 Gbps</td>
+                        <td>6 SFP/SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>450 - 1440 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 3590-48S-4XE PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 SFP</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>462 Mpps</td>
+                        <td>616 Gbps</td>
+                        <td>48 SFP - 4 SFP/SFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5520-24M10U-E PROJETO</td>
+                        <td>Giga</td>
+                        <td>24 Portas M10</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>240 Mpps</td>
+                        <td>640 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>90 W</td>
+                        <td>180 - 2010 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5520-24M5U-E PROJETO</td>
+                        <td>Giga</td>
+                        <td>24 Portas M5</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>240 Mpps</td>
+                        <td>400 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>90 W</td>
+                        <td>210 - 2040 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5520-48M10U-4QE PROJETO</td>
+                        <td>Giga</td>
+                        <td>48 Portas M10</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>600 Mpps</td>
+                        <td>1440 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>90 W</td>
+                        <td>90 - 1920 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5523-24M10U-4HE PROJETO</td>
+                        <td>Giga</td>
+                        <td>24 Portas M10</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>1050 Mpps</td>
+                        <td>2.56 Tbps</td>
+                        <td>24 SFP/SFP+ opcional</td>
+                        <td class="nao">Não</td>
+                        <td>15 - 100 W</td>
+                        <td>300 - 2700 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5525-24X-2HE PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>705 Mpps</td>
+                        <td>1680 Gbps</td>
+                        <td>24 SFP+ - 2 QSFP28</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5525-24X-2QE PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>705 Mpps</td>
+                        <td>960 Gbps</td>
+                        <td>24 SFP+ - 2 QSFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5525-24X-6H PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>600 Mpps</td>
+                        <td>1680 Gbps</td>
+                        <td>24 SFP+ - 6 QSFP28</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5525-48X-2HE PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>1050 Mpps</td>
+                        <td>2160 Gbps</td>
+                        <td>48 SFP+ - 2 QSFP28</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5525-48X-2QE PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>1050 Mpps</td>
+                        <td>1440 Gbps</td>
+                        <td>48 SFP+ - 2 QSFP+</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5525-48X-6H PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>600 Mpps</td>
+                        <td>2160 Gbps</td>
+                        <td>48 SFP+ - 6 QSFP28</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5530-24Y-8H PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>1800 Mpps</td>
+                        <td>2.8 Tbps</td>
+                        <td>28 SFP28 - 8 QSFP28</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SC 5530-48Y-8H PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>2000 Mpps</td>
+                        <td>4 Tbps</td>
+                        <td>48 SFP28 - 8 QSFP28</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SDC 5850-2S-32H PROJETO</td>
+                        <td>Giga</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>2024 Mpps</td>
+                        <td>6.4 Tbps</td>
+                        <td>2 SFP - 32 QSFP28</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 1822 HI-POE</td>
+                        <td>Giga | Fast</td>
+                        <td>16 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>5.36 Mpps</td>
+                        <td>7.2 Gbps</td>
+                        <td>2 Combo</td>
+                        <td class="sim">Sim</td>
+                        <td>1-2P 60W / 3-16P 30W</td>
+                        <td>135 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 2400 QR+</td>
+                        <td>Fast</td>
+                        <td>24 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>3.5 Mpps</td>
+                        <td>4.8 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>2 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 2421 POE</td>
+                        <td>Giga | Fast</td>
+                        <td>24 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>6.55 Mpps</td>
+                        <td>8.8 Gbps</td>
+                        <td>1 Combo</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>230 W</td>
+                        <td class="nao">Não</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 2622 MR L2</td>
+                        <td>Fast</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>6.6 Mpps</td>
+                        <td>8 Gbps</td>
+                        <td>2 Combo</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 500 HI-POE</td>
+                        <td>Fast</td>
+                        <td>5 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>744 Kpps</td>
+                        <td>1.8 Gbps</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1P 60W / 2-4P 30W</td>
+                        <td>60 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 500 POE</td>
+                        <td>Fast</td>
+                        <td>5 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>148 Kpps</td>
+                        <td>1 Gbps</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>58 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 800 Q+</td>
+                        <td>Fast</td>
+                        <td>8 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>1.19 Mpps</td>
+                        <td>1.6 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 800 Q+ ULTRA</td>
+                        <td>Fast</td>
+                        <td>8 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>1.19 Mpps</td>
+                        <td>1.6 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 800 VLAN</td>
+                        <td>Fast</td>
+                        <td>8 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>1.19 Mpps</td>
+                        <td>200 Mbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 800 VLAN ULTRA</td>
+                        <td>Fast</td>
+                        <td>8 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>1.19 Mpps</td>
+                        <td>200 Mbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 900 HI-POE</td>
+                        <td>Fast</td>
+                        <td>9 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>1.34 Mpps</td>
+                        <td>1.8 Gbps</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1P 60W / 2-8P 30W</td>
+                        <td>96 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 1002 MR L2+</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>15 Mpps</td>
+                        <td>20 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 1002 POE L2+</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>14.9 Mpps</td>
+                        <td>20 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>35 W</td>
+                        <td>70 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 1602 POE MAX</td>
+                        <td>Giga</td>
+                        <td>16 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>26.78 Mpps</td>
+                        <td>32 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>35 W</td>
+                        <td>223 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2404 POE MAX</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>41,66 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Combo</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>400 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 5204 MR L2+</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>77,4 Mpps</td>
+                        <td>104 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 800 Q+</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>11,9 Mpps</td>
+                        <td>16 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 800 VLAN</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>11,9 Mpps</td>
+                        <td>2 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SI 3100-8G-4S PROJETO</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>17 Mpps</td>
+                        <td>24 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SI 3100-8GP-4S PROJETO</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>17 Mpps</td>
+                        <td>24 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>125 W</td>
+                        <td class="sim">Sim</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SMART S2110G-HPA</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>15 Mpps</td>
+                        <td>20 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>110 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SMART S2120G-HPA 240W</td>
+                        <td>Giga</td>
+                        <td>18 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>29,76 Mpps</td>
+                        <td>40 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="sim">Sim</td>
+                        <td>30W:16 | 90W:2</td>
+                        <td>240 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SMART S2128G-HPA 360W</td>
+                        <td>Giga</td>
+                        <td>26 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>41,664 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="sim">Sim</td>
+                        <td>30W:24 | 90W:2</td>
+                        <td>360 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1016G</td>
+                        <td>Giga</td>
+                        <td>16 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>1,488 Mpps</td>
+                        <td>32 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S1026F-P</td>
+                        <td>Giga | Fast</td>
+                        <td>24 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>1,488 Mpps</td>
+                        <td>8.8 Gbps</td>
+                        <td>1 Combo</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W (3-16)</td>
+                        <td>185 W</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 900 POE</td>
+                        <td>Fast</td>
+                        <td>9 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="sim">Sim</td>
+                        <td>1,48 Mpps</td>
+                        <td>1,8 Gbps</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>30 W</td>
+                        <td>97 W</td>
+                        <td class="nao">Não</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 910 PAC</td>
+                        <td>Fast</td>
+                        <td>9 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>2,67 Mpps</td>
+                        <td>3,6 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>1 ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2400 QR</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>35,7 Mpps</td>
+                        <td>48 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>2 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2400 QR+</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="nao">Não</td>
+                        <td class="nao">Não</td>
+                        <td>35,7 Mpps</td>
+                        <td>48 Gbps</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="nao">Não</td>
+                        <td>2 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2404 MR</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>35,7 Mpps</td>
+                        <td>48 Gbps</td>
+                        <td>4 Combo</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2404 MR L2+</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>38,7 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Combo</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2404 POE</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>35,7 Mpps</td>
+                        <td>48 Gbps</td>
+                        <td>4 Combo</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>180 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2404 POE L2+</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>41,7 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>35 W</td>
+                        <td>240 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2404D MR L2+</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>44,3 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 2404D POE MAX</td>
+                        <td>Giga</td>
+                        <td>24 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="sim">Sim</td>
+                        <td>44,3 Mpps</td>
+                        <td>56 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>30 W</td>
+                        <td>370 W</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 5200 MR</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>77,3 Mpps</td>
+                        <td>104 Gbps</td>
+                        <td>4 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">S2050G-A</td>
+                        <td>Giga</td>
+                        <td>48 Portas</td>
+                        <td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>74,4 Mpps</td>
+                        <td>100 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td class="nao">Não</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 anos</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 1811 POE</td>
+                        <td>Giga | Fast</td>
+                        <td>16 Portas</td>
+					<td class="nao">Não</td>
+						<td class="sim">Sim</td>
+                        <td>5,36 Mpps</td>
+                        <td>7,2 Gbps</td>
+                        <td>1 Independente</td>
+						<td>—</td>
+                        <td>30 W</td>
+                        <td>180 W</td>
+                        <td class="sim">Sim</td>
+                       
+                        <td>1 Ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SF 1821 POE</td>
+                        <td>Giga | Fast</td>
+                        <td>16 Portas</td>
+						<td class="nao">Não</td>
+						<td class="sim">Sim</td>
+                        <td>5,36 Mpps</td>
+                        <td>7,2 Gbps</td>
+                        <td>1 Combo</td>
+						 <td>—</td>
+                        <td>30 W</td>
+                        <td>130 W</td>
+                       
+                       <td class="sim">Sim</td>
+                        <td>1 Ano</td>
+                    </tr>
+                    <tr>
+                        <td class="modelo">SG 1002 MR</td>
+                        <td>Giga</td>
+                        <td>8 Portas</td>
+						<td class="sim">Sim</td>
+                        <td class="nao">Não</td>
+                        <td>14,9 Mpps</td>
+                        <td>20 Gbps</td>
+                        <td>2 Independentes</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td class="sim">Sim</td>
+                        <td>3 Anos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-value">113</span>
+                    <span class="stat-label">Modelos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">Multiplas</span>
+                    <span class="stat-label">Interfaces</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">1-3</span>
+                    <span class="stat-label">Anos Garantia</span>
+                </div>
+            </div>
+            <p>Catálogo completo de switches de rede - Dados extraídos da planilha original</p>
+        </div>
+    </div>
+
+    <script>
+        // Active filters
+        let activeFilters = {
+            poe: false,
+            'no-poe': false,
+            managed: false,
+            unmanaged: false,
+            ports: '',
+            search: '',
+            sfp: false,
+            'no-sfp': false
+        };
+
+        // Column indices (0-based)
+			const COL_MODELO = 1;        // antes era 0
+			const COL_PORTA = 3;         // antes era 2
+			const COL_GERENCIAVEL = 4;   // antes era 3
+			const COL_POE = 5;           // antes era 4
+			const COL_SFP = 8;           // antes era 7
+
+        // Selected items for comparison
+        let selectedItems = [];
+
+        // Add checkboxes to table rows on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const tbody = document.querySelector('tbody');
+            const rows = tbody.querySelectorAll('tr');
+
+            rows.forEach((row, index) => {
+                const checkboxCell = document.createElement('td');
+                checkboxCell.className = 'checkbox-col';
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'compare-checkbox';
+                checkbox.onchange = function() { toggleSelection(this, index); };
+                checkboxCell.appendChild(checkbox);
+                row.insertBefore(checkboxCell, row.firstChild);
+            });
+        });
+
+        function searchTable() {
+            const searchInput = document.getElementById('search-input');
+            activeFilters.search = searchInput.value.toLowerCase().trim();
+            applyFilters();
+        }
+
+        function toggleFilter(filterType) {
+            activeFilters[filterType] = !activeFilters[filterType];
+
+            // Update button states
+            const btn = document.getElementById('btn-' + filterType);
+            if (activeFilters[filterType]) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+
+            applyFilters();
+        }
+
+        function filterByPorts() {
+            const select = document.getElementById('port-filter');
+            activeFilters.ports = select.value;
+            applyFilters();
+        }
+
+        function clearAllFilters() {
+            // Reset all filters
+            activeFilters = {
+                poe: false,
+                'no-poe': false,
+                managed: false,
+                unmanaged: false,
+                ports: '',
+                search: '',
+                sfp: false,
+                'no-sfp': false
+            };
+
+            // Reset button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Reset select
+            document.getElementById('port-filter').value = '';
+
+            // Reset search input
+            document.getElementById('search-input').value = '';
+
+            // Show all rows
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.classList.remove('hidden');
+            });
+
+            updateResultCount(rows.length);
+        }
+
+        function applyFilters() {
+            const rows = document.querySelectorAll('tbody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const portaText = cells[COL_PORTA].textContent;
+                const gerenciavelText = cells[COL_GERENCIAVEL].textContent;
+                const poeText = cells[COL_POE].textContent;
+                const modeloText = cells[COL_MODELO].textContent.toLowerCase();
+
+                // Check if row matches all active filters
+                let shouldShow = true;
+
+                // Search filter
+                if (activeFilters.search) {
+                    if (!modeloText.includes(activeFilters.search)) {
+                        shouldShow = false;
+                    }
+                }
+
+                // PoE filter
+                if (activeFilters.poe && poeText !== 'Sim') {
+                    shouldShow = false;
+                }
+
+                // No PoE filter
+                if (activeFilters['no-poe'] && poeText !== 'Não') {
+                    shouldShow = false;
+                }
+
+                // Managed filter
+                if (activeFilters.managed && gerenciavelText !== 'Sim') {
+                    shouldShow = false;
+                }
+
+                // Unmanaged filter
+                if (activeFilters.unmanaged && gerenciavelText !== 'Não') {
+                    shouldShow = false;
+                }
+
+                // SFP filter
+                if (activeFilters.sfp) {
+                    const sfpText = cells[COL_SFP].textContent;
+                    if (sfpText === 'Não' || sfpText.trim() === '') {
+                        shouldShow = false;
+                    }
+                }
+
+                // No SFP filter
+                if (activeFilters['no-sfp']) {
+                    const sfpText = cells[COL_SFP].textContent;
+                    if (sfpText === 'Sim') {
+                        shouldShow = false;
+                    }
+                }
+
+                // Port filter
+                if (activeFilters.ports) {
+                    const portMatch = portaText.includes(activeFilters.ports + ' ') ||
+                                     portaText.includes(activeFilters.ports + ' Portas') ||
+                                     portaText.includes(activeFilters.ports + ' Portas ') ||
+                                     portaText.includes(activeFilters.ports + 'SFP');
+                    if (!portMatch) {
+                        shouldShow = false;
+                    }
+                }
+
+                // Apply visibility
+                if (shouldShow) {
+                    row.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+
+            updateResultCount(visibleCount);
+        }
+
+        function updateResultCount(count) {
+            const resultCount = document.getElementById('result-count');
+            resultCount.textContent = 'Mostrando ' + count + ' modelo' + (count !== 1 ? 's' : '');
+        }
+
+        // Comparison Functions
+        function toggleSelection(checkbox, rowIndex) {
+            const row = checkbox.closest('tr');
+            const modelo = row.querySelector('.modelo').textContent;
+
+            if (checkbox.checked) {
+                if (selectedItems.length >= 2) {
+                    checkbox.checked = false;
+                    alert('Você pode comparar no máximo 2 itens.');
+                    return;
+                }
+                selectedItems.push({ index: rowIndex, modelo: modelo, row: row });
+                row.classList.add('row-selected');
+            } else {
+                selectedItems = selectedItems.filter(item => item.modelo !== modelo);
+                row.classList.remove('row-selected');
+            }
+
+            updateComparisonBar();
+        }
+
+        function updateComparisonBar() {
+            const bar = document.getElementById('comparison-bar');
+            const info = document.getElementById('selected-models');
+
+            if (selectedItems.length > 0) {
+                bar.classList.add('active');
+                document.body.classList.add('comparison-active');
+                info.textContent = selectedItems.length + '/2 selecionados';
+            } else {
+                bar.classList.remove('active');
+                document.body.classList.remove('comparison-active');
+                info.textContent = '0/2 selecionados';
+            }
+        }
+
+        function clearSelection() {
+            // Uncheck all checkboxes
+            document.querySelectorAll('.compare-checkbox:not(#select-all)').forEach(cb => {
+                cb.checked = false;
+            });
+
+            // Remove row highlighting
+            document.querySelectorAll('.row-selected').forEach(row => {
+                row.classList.remove('row-selected');
+            });
+
+            // Clear selected items
+            selectedItems = [];
+
+            // Uncheck "select all"
+            document.getElementById('select-all').checked = false;
+
+            updateComparisonBar();
+        }
+
+        function showComparison() {
+            if (selectedItems.length !== 2) {
+                alert('Selecione exatamente 2 itens para comparar.');
+                return;
+            }
+
+            const modal = document.getElementById('comparison-modal');
+            const body = document.getElementById('comparison-body');
+
+            // Get data from both rows
+            const row1 = selectedItems[0].row;
+            const row2 = selectedItems[1].row;
+
+            const cells1 = row1.querySelectorAll('td');
+            const cells2 = row2.querySelectorAll('td');
+
+            // Build comparison table (accounting for checkbox column - cells[0] is checkbox)
+            let html = `
+                <table class="comparison-table">
+                    <tr>
+                        <th class="comparison-label">Modelo</th>
+                        <td>${cells1[1].textContent}</td>
+                        <td>${cells2[1].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">Interface</th>
+                        <td>${cells1[2].textContent}</td>
+                        <td>${cells2[2].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">Quantidade de Portas</th>
+                        <td>${cells1[3].textContent}</td>
+                        <td>${cells2[3].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">Gerenciável</th>
+                        <td>${cells1[4].textContent}</td>
+                        <td>${cells2[4].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">PoE Ativo</th>
+                        <td>${cells1[5].textContent}</td>
+                        <td>${cells2[5].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">Taxa de Encaminhamento</th>
+                        <td>${cells1[6].textContent}</td>
+                        <td>${cells2[6].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">Backplane</th>
+                        <td>${cells1[7].textContent}</td>
+                        <td>${cells2[7].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">Possui SFP</th>
+                        <td>${cells1[8].textContent}</td>
+                        <td>${cells2[8].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">PoE Extender</th>
+                        <td>${cells1[9].textContent}</td>
+                        <td>${cells2[9].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">PoE Por Porta</th>
+                        <td>${cells1[10].textContent}</td>
+                        <td>${cells2[10].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">PoE Total</th>
+                        <td>${cells1[11].textContent}</td>
+                        <td>${cells2[11].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">QoS</th>
+                        <td>${cells1[12].textContent}</td>
+                        <td>${cells2[12].textContent}</td>
+                    </tr>
+                    <tr>
+                        <th class="comparison-label">Garantia</th>
+                        <td>${cells1[13].textContent}</td>
+                        <td>${cells2[13].textContent}</td>
+                    </tr>
+                </table>
+            `;
+
+            body.innerHTML = html;
+            modal.classList.add('active');
+        }
+
+        function closeComparisonModal() {
+            const modal = document.getElementById('comparison-modal');
+            modal.classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('comparison-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeComparisonModal();
+            }
+        });
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('select-all');
+            const checkboxes = document.querySelectorAll('tbody .compare-checkbox');
+
+            if (selectAll.checked) {
+                // Select first 2 visible items
+                let count = 0;
+                checkboxes.forEach(cb => {
+                    if (count < 2 && !cb.closest('tr').classList.contains('hidden')) {
+                        cb.checked = true;
+                        const row = cb.closest('tr');
+                        const modelo = row.querySelector('.modelo').textContent;
+                        if (!selectedItems.find(item => item.modelo === modelo)) {
+                            selectedItems.push({ index: Array.from(row.parentNode.children).indexOf(row), modelo: modelo, row: row });
+                            row.classList.add('row-selected');
+                        }
+                        count++;
+                    }
+                });
+            } else {
+                checkboxes.forEach(cb => cb.checked = false);
+                document.querySelectorAll('.row-selected').forEach(row => row.classList.remove('row-selected'));
+                selectedItems = [];
+            }
+
+            updateComparisonBar();
+        }
+    </script>
+</body>
+</html>
