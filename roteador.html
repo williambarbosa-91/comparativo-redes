@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Comparador de Roteadores</title>
+    <style>
+        :root { --bg: #090d16; --card-bg: #111827; --accent: #10b981; --accent-hover: #059669; --text: #fff; --border: #1f2937; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 20px; }
+        .container { max-width: 1500px; margin: 0 auto; margin-bottom: 80px; }
+        table { width: 100%; border-collapse: collapse; background: var(--card-bg); font-size: 12px; }
+        th, td { padding: 8px; border: 1px solid var(--border); text-align: left; }
+        th { background: var(--border); color: #9ca3af; text-transform: uppercase; }
+        tr:hover { background: #1a2538; }
+        
+        .floating-btn { position: fixed; bottom: 20px; right: 20px; background: var(--accent); color: white; padding: 15px 30px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 999; }
+        .floating-btn:hover { background: var(--accent-hover); }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; overflow-y: auto; }
+        .modal-content { background: var(--card-bg); width: 85%; margin: 40px auto; padding: 30px; border-radius: 12px; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 30px; }
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .comp-item h3 { color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Roteadores Residenciais </h1>
+	<p>CRIADO POR: WILLIAM (SUPORTE TECNICO)</p>
+    <table id="routerTable">
+        <thead>
+            <tr>
+                <th>Sel</th><th>Modelo</th><th>Interface</th><th>Cobertura</th><th>Usuários</th><th>Plano Rec.</th><th>2.4GHz</th><th>5GHz</th><th>Alimentação</th><th>Repetidor</th><th>Roteador</th><th>Garantia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><input type="checkbox" class="router-select"></td><td>ADAPTADOR A1800X</td><td>N/A</td><td>N/A</td><td>N/A</td><td>até 800 Mbps</td><td>574 Mbps</td><td>1201 Mbps (AX)</td><td>5V (USB)</td><td>N/A</td><td>N/A</td><td>3 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>EX 1500</td><td>Giga</td><td>100 m²</td><td>128</td><td>até 600 Mbps</td><td>300 Mbps</td><td>1201 Mbps (AX)</td><td>100-240 V</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>RX 1500</td><td>Giga</td><td>140 m²</td><td>128</td><td>até 600 Mbps</td><td>300 Mbps</td><td>1201 Mbps (AX)</td><td>12V / 1A</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>RX 3000</td><td>Giga</td><td>140 m²</td><td>128</td><td>até 800 Mbps</td><td>600 Mbps (AX)</td><td>2400 Mbps (AX)</td><td>12V (1,5A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>SR1041F</td><td>Giga</td><td>120 m²</td><td>128</td><td>até 600 Mbps</td><td>300 Mbps</td><td>1201 Mbps (AX)</td><td>12V (1A)</td><td>Não</td><td>Sim</td><td>1 ano</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>SR1041F (v2)</td><td>Giga</td><td>120 m²</td><td>128</td><td>até 800 Mbps</td><td>574 Mbps</td><td>2402 Mbps (AX)</td><td>12V (1A)</td><td>Não</td><td>Sim</td><td>1 ano</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>TWIBI FORCE AX</td><td>Giga</td><td>140 m²</td><td>128</td><td>até 600 Mbps</td><td>300 Mbps</td><td>1201 Mbps (AX)</td><td>12V (1,5 A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>TWIBI FORCE PLUG</td><td>Fast</td><td>80 m²</td><td>30</td><td>até 100 Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>100-240 V</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>TWIBI FORCE PLUG GIGA</td><td>Giga</td><td>80 m²</td><td>30</td><td>até 400 Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>100-240 V</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>W4 300F</td><td>Fast</td><td>70 m²</td><td>15</td><td>até 70 Mbps</td><td>300 Mbps</td><td>N/A</td><td>12V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>W4-300S</td><td>Fast</td><td>100 m²</td><td>20</td><td>até 70 Mbps</td><td>300 Mbps</td><td>N/A</td><td>5 VDC / 1 A</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>W5 1200F</td><td>Fast</td><td>80 m²</td><td>20</td><td>até 100 Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>12V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>W5 1200G</td><td>Giga</td><td>120 m²</td><td>40</td><td>até 400 Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>9 - 12V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>W5-2100G</td><td>Giga</td><td>180 m²</td><td>60</td><td>até 500 Mbps</td><td>300 Mbps</td><td>1733 Mbps</td><td>12V DC / 1,5A</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>W5-1200GS</td><td>Giga</td><td>120 m²</td><td>40</td><td>até 400 Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>12V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>W6 1500</td><td>Giga</td><td>140 m²</td><td>128</td><td>até 600Mbps</td><td>300 Mbps</td><td>1201 Mbps</td><td>12V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>ACTION RF 1200</td><td>Fast</td><td>80 m²</td><td>20</td><td>até 100Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>9V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>ACTION RG 1200</td><td>Fast</td><td>120 m²</td><td>40</td><td>até 400Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>12V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>GF 1200</td><td>Giga | Fast</td><td>100 m²</td><td>30</td><td>até 100Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>12V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>IWA 3001</td><td>USB 2.0</td><td>N/A</td><td>N/A</td><td>até 40Mbps</td><td>300 Mbps</td><td>N/A</td><td>5V (USB)</td><td>Não</td><td>Não</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>RF 301K</td><td>Fast</td><td>70 m²</td><td>10</td><td>até 40Mbps</td><td>300 Mbps</td><td>N/A</td><td>9 - 12V</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>TWIBI FAST</td><td>Fast</td><td>100 m²</td><td>40</td><td>até 100Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>9V (1A)</td><td>Não</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>TWIBI GIGA</td><td>Giga</td><td>180 m²</td><td>60</td><td>até 400Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>12V(1,5)</td><td>Não</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>TWIBI GIGA+</td><td>Giga</td><td>180 m²</td><td>60</td><td>até 400Mbps</td><td>300 Mbps</td><td>867 Mbps</td><td>12V (1A)</td><td>Não</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>ACTION A 1200</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>300 Mbps</td><td>867 Mbps</td><td>5V (USB)</td><td>Não</td><td>Não</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>ACTION R 1200</td><td>Fast</td><td>80 m²</td><td>10</td><td>N/A</td><td>300 Mbps</td><td>867 Mbps</td><td>12V (1A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>IWE 3000N</td><td>Fast</td><td>40 m²</td><td>5</td><td>N/A</td><td>300 Mbps</td><td>N/A</td><td>100-240 V</td><td>Sim</td><td>Não</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>IWE 3001</td><td>Fast</td><td>40 m²</td><td>5</td><td>N/A</td><td>300 Mbps</td><td>N/A</td><td>Sem fonte</td><td>Sim</td><td>Não</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>IWR 1000N</td><td>Fast</td><td>80 m²</td><td>10</td><td>N/A</td><td>150Mbps</td><td>N/A</td><td>12V (0,5A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+            <tr><td><input type="checkbox" class="router-select"></td><td>IWR 3000N</td><td>Fast</td><td>70 m²</td><td>10</td><td>Até 40Mbps</td><td>300 Mbps</td><td>N/A</td><td>12V (0,5A)</td><td>Sim</td><td>Sim</td><td>5 anos</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<button class="floating-btn" onclick="comparar()">Comparar Selecionados</button>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+        <h2>Comparação de Roteadores</h2>
+        <div id="compare-body" class="compare-grid"></div>
+    </div>
+</div>
+
+<script>
+    function comparar() {
+        const checked = document.querySelectorAll('.router-select:checked');
+        if (checked.length !== 2) {
+            alert("Selecione exatamente 2 roteadores para comparar.");
+            return;
+        }
+        const container = document.getElementById('compare-body');
+        container.innerHTML = '';
+        checked.forEach(cb => {
+            const tds = cb.closest('tr').querySelectorAll('td');
+            container.innerHTML += `
+                <div class="comp-item">
+                    <h3>${tds[1].innerText}</h3>
+                    <p><b>Interface:</b> ${tds[2].innerText}</p>
+                    <p><b>Cobertura:</b> ${tds[3].innerText}</p>
+                    <p><b>Usuários:</b> ${tds[4].innerText}</p>
+                    <p><b>Plano Rec.:</b> ${tds[5].innerText}</p>
+                    <p><b>2.4GHz:</b> ${tds[6].innerText}</p>
+                    <p><b>5GHz:</b> ${tds[7].innerText}</p>
+                    <p><b>Alimentação:</b> ${tds[8].innerText}</p>
+                    <p><b>Repetidor:</b> ${tds[9].innerText}</p>
+                    <p><b>Roteador:</b> ${tds[10].innerText}</p>
+                    <p><b>Garantia:</b> ${tds[11].innerText}</p>
+                </div>`;
+        });
+        document.getElementById('modal').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>

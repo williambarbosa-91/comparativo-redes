@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparador de Rádios Outdoor</title>
+	
+    <style>
+        :root {
+            --bg-color: #0b111e;
+            --card-bg: #131c2e;
+            --text-color: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-color: #10b981;
+            --accent-hover: #059669;
+            --border-color: #1e293b;
+        }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Segoe UI', sans-serif; padding: 20px; }
+        h1 { text-align: center; color: white; }
+        .table-container { overflow-x: auto; margin-bottom: 80px; }
+        table { width: 100%; border-collapse: collapse; background-color: var(--card-bg); border-radius: 8px; min-width: 1000px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-color); text-align: left; font-size: 14px; }
+        th { background-color: #1e293b; color: var(--text-muted); text-transform: uppercase; font-size: 11px; }
+        tr:hover { background-color: #1a2538; }
+        
+        .floating-btn { position: fixed; bottom: 20px; right: 20px; background: var(--accent-color); color: white; padding: 15px 30px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: background 0.3s; }
+        .floating-btn:hover { background: var(--accent-hover); }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; overflow-y: auto; }
+        .modal-content { background: var(--card-bg); width: 85%; margin: 40px auto; padding: 30px; border-radius: 12px; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 30px; color: var(--text-muted); }
+        .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .comp-item h3 { color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>Rádios Outdoor</h1>
+	<p>CRIADO POR: WILLIAM (SUPORTE TECNICO)</p>
+    <div class="table-container">
+        <table id="radioTable">
+            <thead>
+                <tr>
+                    <th>Sel</th><th>Modelo</th><th>Interface</th><th>Indicado</th><th>Ganho</th><th>Potência</th><th>Pacotes</th><th>Throughput</th><th>Abertura</th><th>Distância</th><th>Wireless</th><th>Alimentação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5A GIGA</td><td>Giga</td><td>BASE</td><td>N/A</td><td>29 dBm</td><td>80k</td><td>180/300</td><td>N/A</td><td>N/A</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5A-15</td><td>Fast</td><td>PTP</td><td>15 dBi</td><td>29 dBm</td><td>80k</td><td>180/300</td><td>35°</td><td>6 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5A-20</td><td>Fast</td><td>PTP</td><td>20 dBi</td><td>29 dBm</td><td>80k</td><td>180/300</td><td>16°</td><td>10 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5A-90</td><td>Fast</td><td>BASE</td><td>18 dBi</td><td>29 dBm</td><td>80k</td><td>180/300</td><td>90°/20°</td><td>10 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5A-90 GIGAV3</td><td>Giga</td><td>BASE</td><td>18 dBi</td><td>29 dBm</td><td>80k</td><td>180/300</td><td>90°/20°</td><td>10 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>KIT WOM 5A MIMO</td><td>Fast</td><td>PTP</td><td>16 dBi</td><td>28 dBm</td><td>60k</td><td>160/300</td><td>40°/18°</td><td>1 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>KIT WOM 5A MIMO G2</td><td>Fast</td><td>PTP</td><td>12 dBi</td><td>28 dBm</td><td>57k</td><td>89 Mbps</td><td>33°</td><td>1 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOM 5A</td><td>Fast</td><td>PTP</td><td>16 dBi</td><td>28 dBm</td><td>60k</td><td>110/150</td><td>40°/18°</td><td>4 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOM 5A MIMO</td><td>Fast</td><td>PTP</td><td>16 dBi</td><td>28 dBm</td><td>60k</td><td>160/300</td><td>40°/18°</td><td>6 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOM AC</td><td>Giga</td><td>PTP</td><td>16 dBi</td><td>23 dBm</td><td>80k</td><td>867 Mbps</td><td>40°/20°</td><td>5 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOM AC MAX</td><td>Giga</td><td>PTP</td><td>20 dBi</td><td>23 dBm</td><td>80k</td><td>867 Mbps</td><td>16°</td><td>8 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOM 5A-23</td><td>Fast</td><td>PTP</td><td>23 dBi</td><td>25 dBm</td><td>60k</td><td>160/300</td><td>9°</td><td>10 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 2M-14</td><td>Fast</td><td>PTP</td><td>14 dBi</td><td>30 dBm</td><td>33k</td><td>160/300</td><td>34°/36°</td><td>2 Km</td><td>MiMo 2x2</td><td>12-48V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 2M-90</td><td>Fast</td><td>BASE</td><td>16 dBi</td><td>30 dBm</td><td>33k</td><td>160/300</td><td>90°/30°</td><td>4 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5M</td><td>Fast</td><td>BASE</td><td>N/A</td><td>29 dBm</td><td>60k</td><td>180/300</td><td>N/A</td><td>N/A</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5M+</td><td>Fast</td><td>BASE</td><td>N/A</td><td>29 dBm</td><td>60k</td><td>180/300</td><td>N/A</td><td>N/A</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5M-18+</td><td>Fast</td><td>PTP</td><td>18 dBi</td><td>29 dBm</td><td>60k</td><td>180/300</td><td>16°</td><td>10 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5M-90</td><td>Fast</td><td>BASE</td><td>18 dBi</td><td>29 dBm</td><td>60k</td><td>180/300</td><td>90°/16°</td><td>10 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC 5M-90+</td><td>Fast</td><td>BASE</td><td>18 dBi</td><td>29 dBm</td><td>60k</td><td>180/300</td><td>90°/16°</td><td>10 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>APC MACH 5</td><td>Fast</td><td>PTP</td><td>25 dBi</td><td>29 dBm</td><td>60k</td><td>180/300</td><td>6°/9°</td><td>10 Km</td><td>MiMo 2x2</td><td>12-48V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>PTP 5-23</td><td>Fast</td><td>PTP</td><td>23 dBi</td><td>29 dBm</td><td>80k</td><td>200/300</td><td>6°/9°</td><td>10 Km</td><td>MiMo 2x2</td><td>48V/PoE</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>PTP 5-N MIMO PRO</td><td>Giga</td><td>PTP</td><td>N/A</td><td>29 dBm</td><td>80k</td><td>200/300</td><td>N/A</td><td>N/A</td><td>MiMo 2x2</td><td>48V/PoE</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOG 212</td><td>Fast</td><td>PTP</td><td>12 dBi</td><td>27 dBm</td><td>N/A</td><td>90/150</td><td>60°/30°</td><td>1-2 Km</td><td>SiSo 1x1</td><td>12V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOM 5000</td><td>Fast</td><td>PTP</td><td>12 dBi</td><td>28 dBm</td><td>50k</td><td>110/150</td><td>40°/15°</td><td>2 Km</td><td>SiSo 1x1</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOM 5000 MIMO</td><td>Fast</td><td>PTP</td><td>14 dBi</td><td>28 dBm</td><td>50k</td><td>160/300</td><td>40°/15°</td><td>4 Km</td><td>MiMo 2x2</td><td>12-24V</td></tr>
+                <tr><td><input type="checkbox" class="radio-select"></td><td>WOM 5000i</td><td>Fast</td><td>PTP</td><td>12 dBi</td><td>28 dBm</td><td>50k</td><td>110/150</td><td>40°/15°</td><td>2 Km</td><td>SiSo 1x1</td><td>12-24V</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button class="floating-btn" onclick="comparar()">Comparar Selecionados</button>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+            <h2>Comparação de Equipamentos</h2>
+            <div id="compare-body" class="compare-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        function comparar() {
+            const checked = document.querySelectorAll('.radio-select:checked');
+            if (checked.length !== 2) {
+                alert("Por favor, selecione exatamente 2 rádios.");
+                return;
+            }
+            const container = document.getElementById('compare-body');
+            container.innerHTML = '';
+            checked.forEach(cb => {
+                const tds = cb.closest('tr').querySelectorAll('td');
+                container.innerHTML += `
+                    <div class="comp-item">
+                        <h3>${tds[1].innerText}</h3>
+                        <p><b>Interface:</b> ${tds[2].innerText}</p>
+                        <p><b>Indicado:</b> ${tds[3].innerText}</p>
+                        <p><b>Ganho:</b> ${tds[4].innerText}</p>
+                        <p><b>Potência:</b> ${tds[5].innerText}</p>
+                        <p><b>Pacotes:</b> ${tds[6].innerText}</p>
+                        <p><b>Throughput:</b> ${tds[7].innerText}</p>
+                        <p><b>Abertura:</b> ${tds[8].innerText}</p>
+                        <p><b>Distância:</b> ${tds[9].innerText}</p>
+                        <p><b>Wireless:</b> ${tds[10].innerText}</p>
+                        <p><b>Alimentação:</b> ${tds[11].innerText}</p>
+                    </div>`;
+            });
+            document.getElementById('modal').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

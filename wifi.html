@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wi‑Fi Empresarial</title>
+
+<style>
+body{font-family:Arial,sans-serif;margin:20px;background:#f5f5f5}
+h1{text-align:center}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+input,select{padding:8px}
+table{border-collapse:collapse;width:100%;background:#fff}
+th,td{border:1px solid #ddd;padding:8px;text-align:left}
+th{background:#333;color:#fff;position:sticky;top:0}
+tr:nth-child(even){background:#f9f9f9}
+.compare-panel{margin-top:20px;background:#fff;padding:10px;border:1px solid #ccc}
+</style>
+</head>
+<body>
+<h1>Wi‑Fi Empresarial</h1>
+<p>CRIADO POR: WILLIAM (SUPORTE TECNICO)</p>
+
+<div class="controls">
+<input type="text" id="search" placeholder="Buscar modelo...">
+<select id="interfaceFilter">
+<option value="">Todas Interfaces</option>
+<option value="Giga">Giga</option>
+<option value="Fast">Fast</option>
+</select>
+</div>
+
+<table id="tbl"></table>
+
+<div class="compare-panel">
+<h2>Comparação</h2>
+<p>Selecione até 2 equipamentos:</p>
+<div id="compare"></div>
+</div>
+
+<script>
+const raw=`Wi‑Fi Empresarial
+
+Colunas:
+Modelo | Interface | Cobertura Aproximada | Raio Aproximado | Usuários Máx. | DataRate Máx. 2G | DataRate Máx. 5G | Padrão | Qtde Portas | Tensão | Tipo PoE | Handover | Inmaster | Garantia
+
+AP 1250 AC MAX | Giga | 450 m² | 12 m | 350 usuários | 300 Mbps | 866 Mbps | 11b/g/n/ac | 2 Portas | 48V | 12 VDC (P4) | 802.3at | Sim | Sim | 1 ano
+AP 1250 AC OUTDOOR | Giga | 400 m² | 11,2 m | 350 usuários | 300 Mbps | 886 Mbps | 11b/g/n/ac | 2 Portas | 48V | 12 VDC (P4) | 802.3at | Sim | Sim | 1 ano
+AP 1350 AC-S | Giga | 350 m² | 10,52 m | 350 usuários | 450 Mbps | 886 Mbps | 11b/g/n/ac | 1 Porta | 48V | 12 VDC (P4) | 802.3at | Sim | Sim | 1 ano
+AP 1800 AX | Giga | 200 m² | 7,98 m | 256 usuários | 574 Mbps | 1200 Mbps | 11b/g/n/ac/ax | 1 Porta | 48V | 802.3at | Não | Sim | 1 ano
+AP 3000 AX | Giga | 350 m² | 10,5 m | 256 usuários | 574 Mbps | 2402 Mbps | 11b/g/n/ac/ax | 1 Porta | 48V | 802.3at | Não | Sim | 1 ano
+AP 3000 AX OUTDOOR | Giga | 350 m² | 10,5 m | 256 usuários | 574 Mbps | 2402 Mbps | 11b/g/n/ac/ax | 1 Porta | 48V | 802.3at | Não | Sim | 1 ano
+AP 310 | Fast | 200 m² | 7,98 m | 100 usuários | 300 Mbps | N/A | 11b/g/n | 1 Porta | 12V/24V (Padrão B) | Passivo | Não | Sim | 1 ano
+AP 360 | Fast | 400 m² | 11,2 m | 100 usuários | 300 Mbps | N/A | 11b/g/n | 1 Porta | 12V/24V (Padrão B) | Passivo | Não | Sim | 1 ano
+RW 6181 | Giga | 350 m² | 10,56 m | 256 usuários | 576 Mbps | 1204 Mbps | 11b/g/n/ac/ax | 1 Porta | 54VDC (P4) / 48V PoE passivo | 802.3at | Não | Não | 1 ano
+RW 6302 | Giga | 350 m² | 10,56 m | 256 usuários | 574 Mbps | 2402 Mbps | 11b/g/n/ac/ax | 2 Portas | 54VDC (P4) / 48V PoE passivo | 802.3at | Não | Não | 1 ano
+RW 6302 MAX | Giga | 450 m² | 11,97 m | 256 usuários | 574 Mbps | 2402 Mbps | 11b/g/n/ac/ax | 2 Portas | 54VDC (P4) / 48V PoE passivo | 802.3at | Não | Não | 1 ano
+RW 6302X (OUTDOOR) | Giga | 350 m² | 10,56 m | 256 usuários | 574 Mbps | 2402 Mbps | 11b/g/n/ac/ax | 2 Portas | 48VDC (P4) / 48V PoE passivo | 802.3at | Não | Não | 1 ano
+RW 6305W (PAREDE) | Giga | 350 m² | 10,56 m | 256 usuários | 574 Mbps | 2402 Mbps | 11b/g/n/ac/ax | 4 Portas + 1 PoE Passthrough | 48V PoE passivo | 802.3at | Não | Não | 1 ano
+AP 1350 AC | Giga | 350 m² | 10,52 m | 350 usuários | 450 Mbps | 886 Mbps | 11b/g/n/ac | 1 Porta | 24V Passivo | 802.3af/A | Sim | Sim | 1 ano
+AP 1750 AC | Giga | 350 m² | 10,52 m | 500 usuários | 450 Mbps | 1300 Mbps | 11b/g/n/ac | 2 Portas | 48V (Padrão B) | 802.3af | Sim | Sim | 1 ano
+BSPRO 1350 AC | Giga | 350 m² | 10,52 m | 350 usuários | 450 Mbps | 886 Mbps | 11b/g/n/ac | 1 Porta | 24V Passivo | 802.3af/A | Sim | Não | 1 ano
+BSPRO 1350 AC-S | Giga | 350 m² | 10,52 m | 350 usuários | 450 Mbps | 886 Mbps | 11b/g/n/ac | 1 Porta | 48V / 12 VDC (P4) | 802.3at | Sim | Não | 1 ano
+BSPRO 360 | Fast | 400 m² | 11,2 m | 100 usuários | 300 Mbps | N/A | 11b/g/n | 1 Porta | 12V/24V (Padrão B) | Passivo | Não | Não | 1 ano
+AP 1210 AC | Giga | 200 m² | 7,98 m | 200 usuários | 300 Mbps | 886 Mbps | 11b/g/n/ac | 1 Porta | 48V (Padrão B) | 802.3af | Sim | Sim | 1 ano
+AP 300 | Fast | 300 m² | 9,77 m | 100 usuários | 300 Mbps | N/A | 11b/g/n | 2 Portas | 12V/24V (Padrão B) | Passivo | Não | Não | 1 ano
+HOTSPOT 300 | Fast | 300 m² | 9,77 m | 60 usuários | 300 Mbps | N/A | 11b/g/n | 2 Portas | 12V/24V (Padrão B) | Passivo | Não | Não | 1 ano
+`;
+
+const linhas = raw.split('\n').filter(l=>l.includes('|'));
+const cab = linhas[0].split('|').map(x=>x.trim());
+
+const dados = linhas.slice(1).map(l=>{
+ const c=l.split('|').map(x=>x.trim());
+ let o={};
+ cab.forEach((h,i)=>o[h]=c[i]||'');
+ return o;
+});
+
+const tbl=document.getElementById('tbl');
+const search=document.getElementById('search');
+const interfaceFilter=document.getElementById('interfaceFilter');
+
+function render(){
+ let rows=dados.filter(r=>
+   JSON.stringify(r).toLowerCase().includes(search.value.toLowerCase()) &&
+   (!interfaceFilter.value || r["Interface"]===interfaceFilter.value)
+ );
+
+ let html='<tr><th>Comparar</th>'+cab.map(h=>`<th>${h}</th>`).join('')+'</tr>';
+ rows.forEach((r,i)=>{
+   html+='<tr><td><input type="checkbox" class="cmp" data-i="'+i+'"></td>'+
+   cab.map(h=>`<td>${r[h]||''}</td>`).join('')+'</tr>';
+ });
+ tbl.innerHTML=html;
+ document.querySelectorAll('.cmp').forEach(c=>c.addEventListener('change',compare));
+}
+
+function compare(){
+ const sel=[...document.querySelectorAll('.cmp:checked')].slice(0,2);
+ const div=document.getElementById('compare');
+ if(sel.length<2){div.innerHTML='Selecione 2 equipamentos'; return;}
+ const a=dados[sel[0].dataset.i];
+ const b=dados[sel[1].dataset.i];
+ let h='<table><tr><th>Campo</th><th>'+a["Modelo"]+'</th><th>'+b["Modelo"]+'</th></tr>';
+ cab.forEach(k=>h+=`<tr><td>${k}</td><td>${a[k]||''}</td><td>${b[k]||''}</td></tr>`);
+ h+='</table>';
+ div.innerHTML=h;
+}
+
+search.oninput=render;
+interfaceFilter.onchange=render;
+render();
+</script>
+</body>
+</html>
