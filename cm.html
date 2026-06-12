@@ -355,6 +355,17 @@
             text-transform: uppercase;
             margin-bottom: 2px;
         }
+		.status-point {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			margin-right: 5px;
+		}
+		.color-green { background-color: #10b981; }
+		.color-blue { background-color: #3b82f6; }
+		.color-red { background-color: #ef4444; }
+		.color-orange { background-color: #f59e0b; }
     </style>
 </head>
 <body>
@@ -396,7 +407,7 @@
             <tbody>
                 <tr data-model="KFM 112" data-info='{"interface":"Fast","conector":"SC/UPC","wdm":"❌","distancia":"2 Km","fibra":"Multimodo","tx":"-3 dBm | -10 dBm","sensibilidade":"-3 dBm | -34 dBm","rx":"1310 nm","tx_sinal":"1310 nm","garantia":"2 Anos"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #10b981; margin-right: 5px;">●</span> KFM 112</td>
+                    <td style="font-weight: 600;"><span class="status-point color-green"></span> KFM 112</td>
                     <td><span class="badge-interface fast">Fast</span></td>
                     <td>SC/UPC</td>
                     <td style="text-align: center;"><span class="status-icon cross">✕</span></td>
@@ -411,7 +422,7 @@
                 </tr>
                 <tr data-model="KFS 1120" data-info='{"interface":"Fast","conector":"SC/UPC","wdm":"❌","distancia":"20 Km","fibra":"Monomodo","tx":"-3 dBm | -10 dBm","sensibilidade":"-3 dBm | -34 dBm","rx":"1310 nm","tx_sinal":"1310 nm","garantia":"2 Anos"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #10b981; margin-right: 5px;">●</span> KFS 1120</td>
+                    <td style="font-weight: 600;"><span class="status-point color-green"></span> KFS 1120</td>
                     <td><span class="badge-interface fast">Fast</span></td>
                     <td>SC/UPC</td>
                     <td style="text-align: center;"><span class="status-icon cross">✕</span></td>
@@ -426,7 +437,7 @@
                 </tr>
                 <tr data-model="KFSD 1120 A/B" data-info='{"interface":"Fast","conector":"SC/UPC","wdm":"✔","distancia":"20 Km","fibra":"Monomodo","tx":"-3 dBm | -10 dBm","sensibilidade":"-3 dBm | -34 dBm","rx":"A - 1310 nm / B - 1550 nm","tx_sinal":"A - 1550 nm / B - 1310 nm","garantia":"2 Anos"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #10b981; margin-right: 5px;">●</span> KFSD 1120 A/B</td>
+                    <td style="font-weight: 600;"><span class="status-point color-green"></span> KFSD 1120 A/B</td>
                     <td><span class="badge-interface fast">Fast</span></td>
                     <td>SC/UPC</td>
                     <td style="text-align: center;"><span class="status-icon check">✓</span></td>
@@ -441,7 +452,7 @@
                 </tr>
                 <tr data-model="KGM 1105" data-info='{"interface":"Giga","conector":"SC/UPC","wdm":"❌","distancia":"500 M","fibra":"Multimodo","tx":"-3 dBm | -10 dBm","sensibilidade":"-3 dBm | -20 dBm","rx":"850 nm","tx_sinal":"850 nm","garantia":"2 Anos"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #10b981; margin-right: 5px;">●</span> KGM 1105</td>
+                    <td style="font-weight: 600;"><span class="status-point color-green"></span> KGM 1105</td>
                     <td><span class="badge-interface giga">Giga</span></td>
                     <td>SC/UPC</td>
                     <td style="text-align: center;"><span class="status-icon cross">✕</span></td>
@@ -456,7 +467,7 @@
                 </tr>
                 <tr data-model="KGS 1120" data-info='{"interface":"Giga","conector":"SC/UPC","wdm":"❌","distancia":"20 Km","fibra":"Monomodo","tx":"-3 dBm | -10 dBm","sensibilidade":"-3 dBm | -23 dBm","rx":"1310 nm","tx_sinal":"1310 nm","garantia":"2 Anos"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #10b981; margin-right: 5px;">●</span> KGS 1120</td>
+                    <td style="font-weight: 600;"><span class="status-point color-green"></span> KGS 1120</td>
                     <td><span class="badge-interface giga">Giga</span></td>
                     <td>SC/UPC</td>
                     <td style="text-align: center;"><span class="status-icon cross">✕</span></td>
@@ -471,7 +482,7 @@
                 </tr>
                 <tr data-model="KGSD 1120 A/B" data-info='{"interface":"Giga","conector":"SC/UPC","wdm":"✔","distancia":"20 Km","fibra":"Monomodo","tx":"-3 dBm | -8 dBm","sensibilidade":"-3 dBm | -23 dBm","rx":"A - 1310 nm / B - 1550 nm","tx_sinal":"A - 1550 nm / B - 1310 nm","garantia":"2 Anos"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #10b981; margin-right: 5px;">●</span> KGSD 1120 A/B</td>
+                    <td style="font-weight: 600;"><span class="status-point color-green"></span> KGSD 1120 A/B</td>
                     <td><span class="badge-interface giga">Giga</span></td>
                     <td>SC/UPC</td>
                     <td style="text-align: center;"><span class="status-icon check">✓</span></td>
