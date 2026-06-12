@@ -347,6 +347,17 @@
             text-transform: uppercase;
             margin-bottom: 2px;
         }
+		.status-point {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			margin-right: 5px;
+		}
+		.color-green { background-color: #10b981; }
+		.color-blue { background-color: #3b82f6; }
+		.color-red { background-color: #ef4444; }
+		.color-orange { background-color: #f59e0b; }
     </style>
 </head>
 <body>
@@ -391,7 +402,7 @@
             <tbody>
                 <tr data-model="GX 1001 C" data-info='{"interface":"Giga","cobertura":"250 m²","raio":"8,92 m","usuarios":"32 usuários","sim":"Single - 4FF Nano SIM","d2g":"574 Mbps (AX)","d5g":"1200 Mbps (AX)","alimentacao":"5V (3A)","repetidor":"❌","roteador":"✔","cliente":"❌","ap":"✔","garantia":"1 ano"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #10b981; margin-right: 5px;">●</span> GX 1001 C</td>
+                    <td style="font-weight: 600;"><span class="status-point color-green"></span> GX 1001 C</td>
                     <td><span class="badge-giga">Giga</span></td>
                     <td>250 m²</td>
                     <td>8,92 m</td>
@@ -405,11 +416,11 @@
                     <td style="text-align: center;"><span class="status-icon cross">✕</span></td>
                     <td style="text-align: center;"><span class="status-icon check">✓</span></td>
                     <td>1 ano</td>
-                    <td><a href="#" class="btn-saiba-mais">Saiba mais ↗</a></td>
+                    <td><a href="https://www.intelbras.com/pt-br/roteador-5g-gx-1001c" class="btn-saiba-mais">Saiba mais ↗</a></td>
                 </tr>
                 <tr data-model="GX 3000" data-info='{"interface":"Giga","cobertura":"300 m²","raio":"9,77 m","usuarios":"128 usuários","sim":"Single - 4FF Nano SIM","d2g":"574 Mbps (AX)","d5g":"2402 Mbps (AX)","alimentacao":"12V (3A)","repetidor":"❌","roteador":"✔","cliente":"❌","ap":"✔","garantia":"1 ano"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #10b981; margin-right: 5px;">●</span> GX 3000</td>
+                    <td style="font-weight: 600;"><span class="status-point color-red"></span> GX 3000</td>
                     <td><span class="badge-giga">Giga</span></td>
                     <td>300 m²</td>
                     <td>9,77 m</td>
@@ -423,11 +434,11 @@
                     <td style="text-align: center;"><span class="status-icon cross">✕</span></td>
                     <td style="text-align: center;"><span class="status-icon check">✓</span></td>
                     <td>1 ano</td>
-                    <td><a href="#" class="btn-saiba-mais">Saiba mais ↗</a></td>
+                    <td><a href="https://www.intelbras.com/pt-br/ajuda-download/download/roteador-5g-gx-3000" class="btn-saiba-mais">Saiba mais ↗</a></td>
                 </tr>
                 <tr data-model="IH 3000" data-info='{"interface":"Giga","cobertura":"300 m²","raio":"9,77 m","usuarios":"128 usuários","sim":"❌","d2g":"574 Mbps (AX)","d5g":"2402 Mbps (AX)","alimentacao":"12V (3A)","repetidor":"❌","roteador":"✔","cliente":"❌","ap":"✔","garantia":"1 ano"}'>
                     <td class="checkbox-cell"><input type="checkbox" onchange="handleCheckboxChange()"></td>
-                    <td style="font-weight: 600;"><span style="color: #84cc16; margin-right: 5px;">●</span> IH 3000</td>
+                    <td style="font-weight: 600;"><span class="status-point color-red"></span> IH 3000</td>
                     <td><span class="badge-giga">Giga</span></td>
                     <td>300 m²</td>
                     <td>9,77 m</td>
@@ -441,7 +452,7 @@
                     <td style="text-align: center;"><span class="status-icon cross">✕</span></td>
                     <td style="text-align: center;"><span class="status-icon check">✓</span></td>
                     <td>1 ano</td>
-                    <td><a href="#" class="btn-saiba-mais">Saiba mais ↗</a></td>
+                    <td><a href="https://www.intelbras.com/pt-br/wi-fi-6-mesh-ih-3000" class="btn-saiba-mais">Saiba mais ↗</a></td>
                 </tr>
             </tbody>
         </table>
